@@ -1,0 +1,44 @@
+<?php
+include("logic/requestHandler.php");
+
+$param = "";
+$method ="";
+
+isset($_GET["method"]) ? $method = $_GET["method"] : false;
+isset($_GET["param"]) ? $param = $_GET["param"] : false;
+
+$logic = new Logic();
+$result = $logic->handleRequest($method, $param);
+if ($result === null)
+{
+    response("GET", 400, null);
+}
+else if (is_string($result))
+{
+    if($result === "NI")
+    {
+        response("GET", 501, "Not implemented yet!");
+    }
+    else
+    {
+        response("GET", 500, $result);
+    }
+}
+else
+{
+    response("GET", 200, $result);
+}
+
+function response($method, $httpStatus, $data)
+{
+    header('Content-Type: application/json');
+    switch ($method) {
+        case "GET":
+            http_response_code($httpStatus);
+            echo (json_encode($data));
+            break;
+        default:
+            http_response_code(405);
+            echo ("Method not supported yet!");
+    }
+}
