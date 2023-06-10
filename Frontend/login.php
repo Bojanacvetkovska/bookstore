@@ -10,43 +10,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<?php include ("navbar.php");
-?>
 <?php
-    if (isset($_POST["login"])) {
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+ include ("navbar.php");
+ if (isset($_SESSION['user'])) { 
+    header("Location: index.php");
+ }
+    else{
+        ?>
+  
 
-        require_once "dbaccess.php";
-        
-        // Ensure to use parameterized queries or prepared statements to prevent SQL injection.
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        
-        if ($stmt->execute()) {
-            $result = $stmt->get_result();
-            $user = $result->fetch_assoc();
 
-            if ($user) {
-                if (password_verify($password, $user["password"])) {
-                    session_start();
-                    $_SESSION["user"] = "yes";
-                    // Instead of redirecting with PHP, we're returning a JSON response.
-                    echo json_encode(['success' => true]);
-                } else {
-                    echo json_encode(['success' => false, 'message' => 'Password does not match']);
-                }
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Email not found']);
-            }
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Query execution failed']);
-        }
-        
-        $stmt->close();
-        $conn->close();
-    }
-?>
     <div class="container">
         <form id="loginForm">
             <div class="form-group">
@@ -67,10 +40,11 @@
          
         </form>
         <div>
-            <p>Not registered yet <a href="registration.php">Register Here</a></p>
+            <p>Not registered yet <a href="registrierung.php">Register Here</a></p>
         </div>
     </div>
 
+<?php } ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="login.js"></script>
 </body>

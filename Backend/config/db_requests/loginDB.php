@@ -1,9 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
     if (isset($_POST["login"])) {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        require_once "dbaccess.php";
+        require_once "dbacess.php";
         
         // Ensure to use parameterized queries or prepared statements to prevent SQL injection.
         $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");

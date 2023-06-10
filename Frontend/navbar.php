@@ -28,7 +28,7 @@ session_start();
                 </li>
                 <?php
                 //Je nach dem ob anonym/user/admin werden unterschiedliche Links gezeigt darüber sind die Links die allen gezeigt werden
-                if (isset($_SESSION['username'])) { 
+                if (isset($_SESSION['user'])) { 
                     echo'
                     <li class="nav-item">
                         <a class="nav-link" href="produkte.php">Produkte</a>
@@ -72,8 +72,8 @@ session_start();
         </div>
     </div>
     <?php 
-    if(isset($_SESSION['username'])){
-        echo " <p class='fs-6 text-end'> Willkommen, ".$_SESSION['username']." </p>";
+    if(isset($_SESSION['user'])){
+        echo " <p class='fs-6 text-end'> Willkommen, ".$_SESSION['user']." </p>";
     } else if(isset($_SESSION['admin'])){
         echo " <p class='fs-6 text-end'> Willkommen, ".$_SESSION['admin']." </p>";
     }

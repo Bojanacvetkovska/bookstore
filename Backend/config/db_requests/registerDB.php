@@ -34,15 +34,18 @@
             }
            }else{
             
-            $sql = "INSERT INTO users (full_name, email, password) VALUES ( ?, ?, ? )";
+            $sql = "INSERT INTO users (name, email, password) VALUES ( ?, ?, ? )";
             $stmt = mysqli_stmt_init($conn);
             $prepareStmt = mysqli_stmt_prepare($stmt,$sql);
-            if ($prepareStmt) {
-                mysqli_stmt_bind_param($stmt,"sss",$fullName, $email, $passwordHash);
-                mysqli_stmt_execute($stmt);
-                echo "<div class='alert alert-success'>You are registered successfully.</div>";
-            }else{
-                die("Something went wrong");
+                    if ($prepareStmt) {
+                            mysqli_stmt_bind_param($stmt,"sss",$fullName, $email, $passwordHash);
+                            if (mysqli_stmt_execute($stmt)) {
+                                echo "<div class='alert alert-success'>You are registered successfully.</div>";
+                            } else {
+                                die("Failed to execute statement: " . mysqli_stmt_error($stmt));
+                            }
+                        }   else{
+                die("Failed to prepare statement: " . mysqli_error($conn));
             }
            }
           
